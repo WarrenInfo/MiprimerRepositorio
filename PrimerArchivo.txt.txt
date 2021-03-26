@@ -1,0 +1,123 @@
+BOTÓN ELIMINAR
+tablita = (DefaultTableModel) Tabla.getModel();
+    
+    if (Tabla.getSelectedRow()==-1){
+    if(Tabla.getRowCount()==0){
+        JOptionPane.showMessageDialog(rootPane, "La tabla está vacía");
+    }else{
+        JOptionPane.showMessageDialog(rootPane, "Seleccione un registro");
+    }
+    }else{
+        JOptionPane.showMessageDialog(rootPane, "Registro borrado");
+        tablita.removeRow(Tabla.getSelectedRow());
+        borrarCampos();
+    }try{
+        GuardarArchivo();
+    }catch(Exception ex){
+    Logger.getLogger(Tarea17_WarrenFernández.class.getName()).log(Level.SEVERE, null, ex);
+    }
+
+GUARDAR ARCHIVO
+ private void GuardarArchivo () throws IOException {
+    File archivoTexto = new File("InformaciónUsuario.txt");
+        if (!archivoTexto.exists()) {
+            archivoTexto.createNewFile();
+        }
+        try(FileWriter fw = new FileWriter(archivoTexto.getAbsoluteFile()); 
+            BufferedWriter bw = new BufferedWriter(fw)) {
+            
+            for (int i = 0; i < Tabla.getRowCount(); i++) {
+                for (int j = 0; j < Tabla.getColumnCount(); j++) {
+                    bw.write((String) Tabla.getModel().getValueAt(i, j)+ ",");
+                }
+                bw.write("\n");
+            }
+            
+        } catch (IOException ex) {
+        }
+     }
+WINDOW OPENED
+
+private void formWindowOpened(java.awt.event.WindowEvent evt) {                                  
+       tablita = (DefaultTableModel) Tabla.getModel();
+       tablita.addColumn("Nombre");
+       tablita.addColumn("Cédula");
+       tablita.addColumn("Celular");
+       tablita.addColumn("Dirección");
+       tablita.addColumn("Nivel");
+       tablita.addColumn("Especialidad");
+       tablita.addColumn("Correo");
+       tablita.addColumn("Habilidades");
+       tablita.addColumn("Frutas");
+       
+        try {
+            try(BufferedReader bfw = new BufferedReader(new FileReader("InformaciónUsuario.txt"))){
+               while( ( line = bfw.readLine())!= null){
+                   tablita.addRow(line.split(","));
+               }
+            }
+        } catch (IOException ex) {
+        }
+    }
+BORRAR CAMPOS
+
+private void borrarCampos(){
+        txtNombre.setText("");
+        txtCedula.setText("");
+        txtCelular.setText("");
+        txtDireccion.setText("");
+        txtCorreo.setText("");
+        txtEspecialidad.setText("");
+        txtNivel.setText("");
+        txtHabilidades.setText("");
+        txtFrutas.setText("");
+
+TABLA MOUSE CLICKED
+
+String Celular2;
+       int index = Tabla.getSelectedRow();
+       nombre = tablita.getValueAt(index, 0).toString();
+       cedula = tablita.getValueAt(index, 1).toString();
+       Celular2 = tablita.getValueAt(index, 2).toString();
+       direccion = tablita.getValueAt(index, 3).toString();
+       nivel = tablita.getValueAt(index, 4).toString();
+       especialidad = tablita.getValueAt(index, 5).toString();
+       correo = tablita.getValueAt(index, 6).toString();
+       habilidades = tablita.getValueAt(index, 7).toString();
+       frutas = tablita.getValueAt(index, 8).toString();
+       
+       txtNombre.setText(nombre);
+       txtCedula.setText(cedula);
+       txtCelular.setText(Celular2);
+       txtDireccion.setText(direccion);
+       txtNivel.setText(nivel);
+       txtEspecialidad.setText(especialidad);
+       txtCorreo.setText(correo);
+       txtHabilidades.setText(habilidades);
+       txtFrutas.setText(frutas);
+
+BOTÓN MODIFICAR
+
+try{ tablita = (DefaultTableModel) Tabla.getModel();
+        if (Tabla.getSelectedRow()==-1){
+            if (Tabla.getRowCount()==0) {
+                JOptionPane.showMessageDialog(rootPane,"La tabla está vacía");
+            }else{
+                JOptionPane.showMessageDialog(rootPane, "Seleccione un registro");
+            }
+        }else{
+            tablita.setValueAt(txtNombre.getText(), Tabla.getSelectedRow(), 0);
+            tablita.setValueAt(txtCedula.getText(), Tabla.getSelectedRow(), 1);
+            tablita.setValueAt(txtCelular.getText(), Tabla.getSelectedRow(), 2);
+            tablita.setValueAt(txtDireccion.getText(), Tabla.getSelectedRow(), 3);
+            tablita.setValueAt(txtNivel.getText(), Tabla.getSelectedRow(), 4);
+            tablita.setValueAt(txtEspecialidad.getText(), Tabla.getSelectedRow(), 5);
+            tablita.setValueAt(txtCorreo.getText(), Tabla.getSelectedRow(), 6);
+            tablita.setValueAt(txtHabilidades.getText(), Tabla.getSelectedRow(), 7);
+            tablita.setValueAt(txtFrutas.getText(), Tabla.getSelectedRow(), 8);
+        }
+    GuardarArchivo();
+    }
+    catch(Exception ex){
+    Logger.getLogger(Tarea17_WarrenFernández.class.getName()).log(Level.SEVERE, null, ex);
+    }
